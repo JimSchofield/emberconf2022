@@ -1,26 +1,19 @@
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
+import PromiseHandler from '../utils/promise-handler';
 import dadJokeFetch from '../utils/dad-joke-promise';
 
 export default class GetDadJokeComponent extends Component {
-  @tracked joke;
-  @tracked error;
-
   constructor() {
     super(...arguments);
 
-    this.fetchDadJoke();
+    this.fetchHandler = new PromiseHandler(() => dadJokeFetch());
   }
 
-  async fetchDadJoke() {
-    try {
-      const res = await dadJokeFetch();
+  get joke() {
+    return this.fetchHandler.value?.joke;
+  }
 
-      const data = await res.json();
-
-      this.joke = data.joke;
-    } catch (error) {
-      this.error = error;
-    }
+  get error() {
+    return this.fetchHandler.error;
   }
 }
