@@ -1,0 +1,5 @@
+
+<label for="searchTerm">Search dad jokes:</label>
+<input type="text" value={{this.searchTerm}} {{on "input" this.updateSearchTerm}}/>
+
+<GetDadJoke @searchTerm={{this.searchTerm}} />

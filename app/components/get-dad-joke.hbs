@@ -3,7 +3,13 @@
     {{this.error}}
   {{else if this.joke }}
     {{this.joke}}
+  {{else if this.noJoke}}
+    No Joke found!
   {{else}}
-    Loading...
+    {{#if @searchTerm}}
+      Search for a joke containing {{@searchTerm}}
+    {{else}}
+      Loading...
+    {{/if}}
   {{/if}}
 </div>

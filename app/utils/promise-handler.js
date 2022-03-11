@@ -15,18 +15,36 @@ export default class PromiseHandler {
     }
   }
 
-  async doFetch() {
+  async update(args) {
+    console.log('updating to search for ', args.searchTerm);
+
+    this.value = null;
+    this.error = null;
+
+    if (this.abortController) {
+      this.abortController.abort();
+    }
+
+    // Keeps previous abort controller aborts to affect next one
+    await Promise.resolve();
+
+    await this.doFetch(args.searchTerm);
+  }
+
+  async doFetch(newTerm = null) {
     this.abortController = new AbortController();
 
-    const { signal } = this.abortController;
-
     try {
-      const res = await this.promiseFunc({ signal });
+      const res = await this.promiseFunc(this.abortController.signal, newTerm);
 
       const data = await res.json();
 
       this.value = data;
     } catch (error) {
+      if (error.name === 'AbortError') {
+        return;
+      }
+
       this.error = error;
     }
   }
