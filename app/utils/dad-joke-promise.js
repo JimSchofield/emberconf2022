@@ -1,4 +1,4 @@
-export default async function () {
+export default async function ({ signal }) {
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve();
@@ -10,5 +10,6 @@ export default async function () {
       accept: 'application/json',
       'User-Agent': 'ember-demonstration',
     },
+    signal,
   });
 }

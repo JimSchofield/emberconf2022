@@ -1,12 +1,16 @@
 import Component from '@glimmer/component';
 import PromiseHandler from '../utils/promise-handler';
 import dadJokeFetch from '../utils/dad-joke-promise';
+import { associateDestroyableChild } from '@ember/destroyable';
 
 export default class GetDadJokeComponent extends Component {
   constructor() {
     super(...arguments);
 
-    this.fetchHandler = new PromiseHandler(() => dadJokeFetch());
+    this.fetchHandler = associateDestroyableChild(
+      this,
+      new PromiseHandler(dadJokeFetch)
+    );
   }
 
   get joke() {
@@ -17,3 +21,4 @@ export default class GetDadJokeComponent extends Component {
     return this.fetchHandler.error;
   }
 }
+

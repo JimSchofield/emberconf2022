@@ -1,11 +1,14 @@
 import { tracked } from '@glimmer/tracking';
+import { registerDestructor } from '@ember/destroyable';
 
 export default class PromiseHandler {
   @tracked value;
   @tracked error;
 
-  constructor(promise, immediate = true) {
-    this.promise = promise;
+  constructor(promiseFunc, immediate = true) {
+    this.promiseFunc = promiseFunc;
+
+    registerDestructor(this, this.destroy);
 
     if (immediate) {
       this.doFetch();
@@ -13,10 +16,23 @@ export default class PromiseHandler {
   }
 
   async doFetch() {
-    const res = await this.promise();
+    this.abortController = new AbortController();
 
-    const data = await res.json();
+    const { signal } = this.abortController;
 
-    this.value = data;
+    try {
+      const res = await this.promiseFunc({ signal });
+
+      const data = await res.json();
+
+      this.value = data;
+    } catch (error) {
+      this.error = error;
+    }
+  }
+
+  destroy(ctx) {
+    console.log('Destroying the fetch request!');
+    ctx.abortController.abort();
   }
 }
