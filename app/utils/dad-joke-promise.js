@@ -5,11 +5,11 @@ export default async function (searchTerm, signal, newTerm = null) {
     }, 1000);
   });
 
-  if (newTerm === '') {
+  if (newTerm === '' || searchTerm === '') {
     throw new Error('Please enter a search term');
   }
 
-  console.log(newTerm);
+  console.log(searchTerm);
 
   const url = searchTerm
     ? `https://icanhazdadjoke.com/search?term=${newTerm ?? searchTerm}`
