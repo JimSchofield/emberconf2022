@@ -1,15 +1,9 @@
+{{#let (dad-joke-helper) as |data|}}
 <div class='dad-joke'>
-  {{#if this.error}}
-    {{this.error}}
-  {{else if this.joke }}
-    {{this.joke}}
-  {{else if this.noJoke}}
-    No Joke found!
+  {{#if data}}
+    {{data.joke}}
   {{else}}
-    {{#if @searchTerm}}
-      Search for a joke containing {{@searchTerm}}
-    {{else}}
-      Loading...
-    {{/if}}
+    Loading...
   {{/if}}
 </div>
+{{/let}}

@@ -1,7 +1,8 @@
 import { tracked } from '@glimmer/tracking';
 import { Resource } from 'ember-could-get-used-to-this';
+import dadJokePromise from '../utils/dad-joke-promise';
 
-export default class PromiseHandler extends Resource {
+export default class DadJokeHelper extends Resource {
   @tracked value;
 
   setup() {
@@ -14,10 +15,8 @@ export default class PromiseHandler extends Resource {
     this.abortController = abortController;
 
     try {
-      const result = await this.args.named.promise(
-        this.args.named.searchTerm,
-        abortController.signal
-      );
+      // Passing no search term or a falsey value defaults to random joke
+      const result = await dadJokePromise(false, abortController.signal);
 
       const data = await result.json();
 
