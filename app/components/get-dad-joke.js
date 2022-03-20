@@ -4,8 +4,6 @@ import { trackedFunction } from 'ember-resources';
 import { tracked } from '@glimmer/tracking';
 
 export default class GetDadJokeComponent extends Component {
-  @tracked error;
-
   jokeResource = trackedFunction(this, async () => {
     if (this.abortController) {
       this.abortController.abort();
@@ -26,8 +24,6 @@ export default class GetDadJokeComponent extends Component {
       if (e.name === 'AbortError') {
         return;
       }
-
-      this.error = e;
     }
   });
 
