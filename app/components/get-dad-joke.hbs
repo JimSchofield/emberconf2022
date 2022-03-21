@@ -1,8 +1,13 @@
 <div class='dad-joke'>
-  {{#if this.jokeResource.value }}
-    {{this.jokeResource.value}}
+  {{#if this.jokeTask.isFinished }}
+    {{this.jokeTask.value}}
+  {{else if this.jokeTask.isError}}
+    Oops! {{this.jokeTask.error}}
+  {{else if this.jokeTask.hasStarted}}
+    Loading search for {{@searchTerm}}
   {{/if}}
 </div>
+
 
 
 

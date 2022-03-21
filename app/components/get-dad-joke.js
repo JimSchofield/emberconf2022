@@ -1,9 +1,13 @@
 import Component from '@glimmer/component';
 import dadJokeFetch from '../utils/dad-joke-promise';
-import { trackedFunction } from 'ember-resources';
+import { useTask } from 'ember-resources';
+import { task } from 'ember-concurrency';
 
 export default class GetDadJokeComponent extends Component {
-  jokeResource = trackedFunction(this, async () => {
+  jokeTask = useTask(this, this.getJoke, () => [this.args.searchTerm]);
+
+  @task
+  *getJoke() {
     if (this.abortController) {
       this.abortController.abort();
     }
@@ -11,12 +15,12 @@ export default class GetDadJokeComponent extends Component {
     this.abortController = new AbortController();
 
     try {
-      const res = await dadJokeFetch(
+      const res = yield dadJokeFetch(
         this.args.searchTerm,
         this.abortController.signal
       );
 
-      const data = await res.json();
+      const data = yield res.json();
 
       return data.results[0].joke;
     } catch (e) {
@@ -24,5 +28,5 @@ export default class GetDadJokeComponent extends Component {
         return;
       }
     }
-  });
+  }
 }
