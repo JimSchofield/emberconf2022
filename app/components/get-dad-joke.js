@@ -1,7 +1,6 @@
 import Component from '@glimmer/component';
 import dadJokeFetch from '../utils/dad-joke-promise';
 import { trackedFunction } from 'ember-resources';
-import { tracked } from '@glimmer/tracking';
 
 export default class GetDadJokeComponent extends Component {
   jokeResource = trackedFunction(this, async () => {
@@ -26,8 +25,4 @@ export default class GetDadJokeComponent extends Component {
       }
     }
   });
-
-  get joke() {
-    return this.jokeResource.value;
-  }
 }

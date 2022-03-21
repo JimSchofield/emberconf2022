@@ -1,15 +1,8 @@
 <div class='dad-joke'>
-  {{#if this.error}}
-    {{this.error}}
-  {{else if this.joke }}
-    {{this.joke}}
-  {{else if this.noJoke}}
-    No Joke found!
-  {{else}}
-    {{#if @searchTerm}}
-      Search for a joke containing {{@searchTerm}}
-    {{else}}
-      Loading...
-    {{/if}}
+  {{#if this.jokeResource.value }}
+    {{this.jokeResource.value}}
   {{/if}}
 </div>
+
+
+
